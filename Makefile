@@ -3,7 +3,7 @@ ifeq ($(VERSION),DEBUG)
   COMPILE_FLAGS=-O0 -fno-inline
 else
   DEBUG_FLAGS=-Wall
-  COMPILE_FLAGS=-O3 
+  COMPILE_FLAGS=-O3 -std=gnu99 
 endif
 
 ifndef PLATFORM
@@ -12,7 +12,8 @@ ifndef PLATFORM
 #PLATFORM=-DXEON
 # PLATFORM=-DOPTERON
 #PLATFORM=-DDEFAULT
-PLATFORM=-DXEON2
+#PLATFORM=-DXEON2
+PLATFORM=-DIDKAT
 endif
 
 UNAME := $(shell uname)
@@ -46,7 +47,7 @@ COMPILE_FLAGS += $(PLATFORM)
 
 LIB_FILES := libraplread.a
 
-all:  libraplread.a
+all:  libraplread.a rapl_watch rapl_exec
 
 libraplread.a: rapl_read.c rapl_read.o rapl_read.h
 	ar -r libraplread.a rapl_read.o rapl_read.h
@@ -54,9 +55,14 @@ libraplread.a: rapl_read.c rapl_read.o rapl_read.h
 rapl_read.o: rapl_read.c rapl_read.h
 	$(GCC) -D_GNU_SOURCE $(COMPILE_FLAGS) $(DEBUG_FLAGS) $(INCLUDES) -c rapl_read.c $(LIBS)
 
+rapl_watch: rapl_watch.c libraplread.a
+	$(GCC) -D_GNU_SOURCE $(COMPILE_FLAGS) $(DEBUG_FLAGS) $(INCLUDES) -o $@ $@.c $(LIBS)
+
+rapl_exec: rapl_exec.c libraplread.a
+	$(GCC) -D_GNU_SOURCE $(COMPILE_FLAGS) $(DEBUG_FLAGS) $(INCLUDES) -o $@ $@.c $(LIBS)
 
 clean:
-	rm -f *.o *.a
+	rm -f *.o *.a rapl_watch rapl_exec
 
 
 

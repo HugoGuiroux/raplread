@@ -176,6 +176,9 @@ detect_cpu(void)
     case CPU_HASWELL:
       // printf("[RAPL] Found Haswell CPU\n");
       break;
+    case CPU_HASWELL_EX:
+      // printf("[RAPL] Found Haswell-EX CPU\n");
+      break;
     default:	
       printf("[RAPL] Unsupported model %d\n", model);
       model=-1;
@@ -247,7 +250,7 @@ rapl_read_init(int core)
       return -1;
     }
 
-  if (!((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL)))
+  if (!((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL) || (rapl_cpu_model == CPU_HASWELL_EX)))
     {
       rapl_dram_counter = 1;
     }
@@ -305,7 +308,7 @@ rapl_read_init_all()
       return -1;
     }
 
-  if (!((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL)))
+  if (!((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL) || (rapl_cpu_model == CPU_HASWELL_EX)))
     {
       rapl_dram_counter = 1;
     }
@@ -392,7 +395,7 @@ rapl_read_start()
     }
 
   /* not available on *Bridge-EP */
-  if ((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL)) 
+  if ((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL) || (rapl_cpu_model == CPU_HASWELL_EX)) 
     {
       result = read_msr(rapl_msr_fd[rapl_socket], MSR_PP1_ENERGY_STATUS);
       rapl_pp1_before[rapl_socket] = (double)result * rapl_energy_units;
@@ -425,7 +428,7 @@ rapl_read_stop()
   result = read_msr(rapl_msr_fd[rapl_socket], MSR_PP0_ENERGY_STATUS);
   rapl_pp0_after[rapl_socket] = (double)result * rapl_energy_units;
 
-  if ((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL)) 
+  if ((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL) || (rapl_cpu_model == CPU_HASWELL_EX)) 
     {
       result = read_msr(rapl_msr_fd[rapl_socket], MSR_PP1_ENERGY_STATUS);
       rapl_pp1_after[rapl_socket] = (double)result * rapl_energy_units;
@@ -653,7 +656,7 @@ rapl_read_print(int detailed)
       if (detailed >= RAPL_PRINT_BEF_AFT)
 	{
 	  /* not available on *Bridge-EP */
-	  if ((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL)) 
+	  if ((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL) || (rapl_cpu_model == CPU_HASWELL_EX)) 
 	    {
 	      if (rapl_pp1_before[rapl_socket] > 0)
 		{
@@ -705,7 +708,7 @@ rapl_read_print(int detailed)
       if (detailed >= RAPL_PRINT_BEF_AFT)
 	{
 	  /* not available on SandyBridge-EP */
-	  if ((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL)) 
+	  if ((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL) || (rapl_cpu_model == CPU_HASWELL_EX)) 
 	    {
 	      if (rapl_pp1_after[rapl_socket] > 0)
 		{
@@ -824,7 +827,7 @@ rapl_read_print_sockets(int socket, int detailed, int protected)
       if (detailed >= RAPL_PRINT_BEF_AFT)
 	{
 	  /* not available on *Bridge-EP */
-	  if ((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL)) 
+	  if ((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL) || (rapl_cpu_model == CPU_HASWELL_EX)) 
 	    {
 	      if (rapl_pp1_before[rapl_socket] > 0)
 		{
@@ -939,7 +942,7 @@ rapl_read_print_sockets(int socket, int detailed, int protected)
       if (detailed >= RAPL_PRINT_BEF_AFT)
 	{
 	  /* not available on SandyBridge-EP */
-	  if ((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL)) 
+	  if ((rapl_cpu_model == CPU_SANDYBRIDGE) || (rapl_cpu_model == CPU_IVYBRIDGE) || (rapl_cpu_model == CPU_HASWELL) || (rapl_cpu_model == CPU_HASWELL_EX)) 
 	    {
 	      if (rapl_pp1_after[rapl_socket] > 0)
 		{

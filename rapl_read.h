@@ -206,6 +206,7 @@ extern "C" {
 #define CPU_IVYBRIDGE		58
 #define CPU_IVYBRIDGE_EP	62
 #define CPU_HASWELL		60
+#define CPU_HASWELL_EX		63
 
 int open_msr(int core);
 long long int read_msr(int fd, int which);
