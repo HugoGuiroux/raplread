@@ -48,7 +48,8 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    if (wait(NULL) < 0) {
+    int status;
+    if (wait(&status) < 0) {
         perror("wait");
         return -1;
     }
@@ -64,5 +65,5 @@ int main(int argc, char *argv[]) {
     RR_PRINT_UNPROTECTED(RAPL_PRINT_ENE);
 
     fclose(fd);
-    return 0;
+    return status;
 }

@@ -24,7 +24,13 @@ int main(int argc, char *argv[]) {
         }
 
         RR_STOP_UNPROTECTED_ALL();
-        RR_PRINT_UNPROTECTED(RAPL_PRINT_ENE);
+	rapl_stats_t s;
+	RR_STATS(&s);
+	double total = s.energy_package[NUMBER_OF_SOCKETS] + s.energy_dram[NUMBER_OF_SOCKETS];
+	if (total <= 0)
+ 	    total = -1;
+        fprintf(stderr, "%f\n", total);
+
     }
 
     return 0;
